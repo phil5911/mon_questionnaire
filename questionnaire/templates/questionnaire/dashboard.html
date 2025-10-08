@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de bord - Étude de marché</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f9f9f9;
+        }
+        h1 {
+            color: #2b7a0b;
+        }
+        .stats {
+            margin-bottom: 30px;
+        }
+        canvas {
+            max-width: 600px;
+            margin: 20px auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>📊 Tableau de bord - Étude de marché</h1>
+
+    <div class="stats">
+        <p><strong>Nombre total de réponses :</strong> {{ total_reponses }}</p>
+        <p><strong>Moyenne d'âge :</strong> {{ moyenne_age }} ans</p>
+    </div>
+
+    <h3>Répartition par sexe</h3>
+    <canvas id="sexeChart"></canvas>
+
+    <script>
+        const ctx = document.getElementById('sexeChart');
+        const sexeChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: {{ labels|safe }},
+                datasets: [{
+                    label: 'Répartition par sexe',
+                    data: {{ data|safe }},
+                    borderWidth: 1,
+                    backgroundColor: ['#4CAF50', '#FFC107', '#03A9F4']
+                }]
+            },
+        });
+    </script>
+
+    <br>
+    <a href="{% url 'questionnaire' %}">← Retour au questionnaire</a>
+</body>
+</html>

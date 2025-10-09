@@ -22,3 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('', include('questionnaire.urls')),
 ]
+
+# Handlers des erreurs
+handler404 = 'questionnaire.views.custom_404'
+handler500 = 'questionnaire.views.custom_500'

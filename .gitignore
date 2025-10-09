@@ -1,1 +1,11 @@
+# Python
+*.pyc
+__pycache__/
+
+# Django
+*.log
+/staticfiles/
+media/
+
+# Environnement
 .env

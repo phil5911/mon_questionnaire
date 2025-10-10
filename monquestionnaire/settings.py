@@ -72,6 +72,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "monquestionnaire.wsgi.application"
 
+import dj_database_url
+
 # --- Base de données ---
 if DEBUG:
     DATABASES = {
@@ -85,15 +87,9 @@ if DEBUG:
         }
     }
 else:
+    # Utilisation de DATABASE_URL fourni par Railway
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('PROD_DB_NAME'),
-            'USER': os.environ.get('PROD_DB_USER'),
-            'PASSWORD': os.environ.get('PROD_DB_PASSWORD'),
-            'HOST': os.environ.get('PROD_DB_HOST'),
-            'PORT': os.environ.get('PROD_DB_PORT'),
-        }
+        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
     }
 
 # --- Validation des mots de passe ---

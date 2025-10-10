@@ -180,6 +180,7 @@ def remplir_formulaire(request):
                 # Log complet des données pour debug
                 logger.info(f"Données POST reçues: {request.POST}")
                 logger.info(f"Données du formulaire validées : {form.cleaned_data}")
+                logger.info("Formulaire servi à jour")
                 form.save()
                 return redirect('merci')
             except Exception as e:

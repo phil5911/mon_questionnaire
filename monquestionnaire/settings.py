@@ -89,7 +89,7 @@ if DEBUG:
 else:
     # Utilisation de DATABASE_URL fourni par Railway
     DATABASES = {
-        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
 
 # --- Validation des mots de passe ---

@@ -1,6 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire Médecine Naturelle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        .section-title {
+            color: #16a085;
+            font-weight: bold;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="number"], select, textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .checkbox-group, .radio-group {
+            margin-left: 20px;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2ecc71;
+        }
+    </style>
+</head>
+<body>
+
 <h2>Questionnaire Médecine Naturelle</h2>
+
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+
+    <!-- Section 1 : Informations générales -->
+    <div class="section-title">Section 1 : Informations générales</div>
+    <div class="form-group">
+        <label for="{{ form.nom.id_for_label }}">Nom *</label>
+        {{ form.nom }}
+        {% if form.nom.errors %}
+            <div class="error">{{ form.nom.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.age.id_for_label }}">Âge</label>
+        {{ form.age }}
+        {% if form.age.errors %}
+            <div class="error">{{ form.age.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.sexe.id_for_label }}">Sexe *</label>
+        {{ form.sexe }}
+        {% if form.sexe.errors %}
+            <div class="error">{{ form.sexe.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.profession.id_for_label }}">Profession *</label>
+        {{ form.profession }}
+        {% if form.profession.errors %}
+            <div class="error">{{ form.profession.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.ville.id_for_label }}">Ville *</label>
+        {{ form.ville }}
+        {% if form.ville.errors %}
+            <div class="error">{{ form.ville.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Section 2 : Habitudes de consommation -->
+    <div class="section-title">Section 2 : Habitudes de consommation</div>
+    <div class="form-group">
+        <label>Achetez-vous régulièrement des produits naturels ?</label>
+        <div class="radio-group">{{ form.utilise_plantes }}</div>
+        {% if form.utilise_plantes.errors %}
+            <div class="error">{{ form.utilise_plantes.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label>Si oui, où les achetez-vous ?</label>
+        <div class="checkbox-group">{{ form.lieu_achat }}</div>
+        {% if form.lieu_achat.errors %}
+            <div class="error">{{ form.lieu_achat.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label>Quels types de produits naturels consommez-vous ?</label>
+        {{ form.type_produit }}
+        {% if form.type_produit.errors %}
+            <div class="error">{{ form.type_produit.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Section 3 : Connaissance des produits naturels -->
+    <div class="section-title">Section 3 : Connaissance des produits naturels</div>
+    <div class="form-group">
+        <label>Connaissez-vous la différence entre produits naturels et bios ?</label>
+        <div class="radio-group">{{ form.connait_med_naturelle }}</div>
+        {% if form.connait_med_naturelle.errors %}
+            <div class="error">{{ form.connait_med_naturelle.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label>Comment avez-vous entendu parler des produits naturels ?</label>
+        <div class="checkbox-group">{{ form.types_soins }}</div>
+        {% if form.types_soins.errors %}
+            <div class="error">{{ form.types_soins.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Section 4 : Motivations et attentes -->
+    <div class="section-title">Section 4 : Motivations et attentes</div>
+    <div class="form-group">
+        <label>Quelles sont vos principales motivations ?</label>
+        <div class="checkbox-group">{{ form.motivations }}</div>
+        {% if form.motivations.errors %}
+            <div class="error">{{ form.motivations.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label>Quels critères sont importants pour l'achat de produits naturels ?</label>
+        {{ form.criteres_achat }}
+        {% if form.criteres_achat.errors %}
+            <div class="error">{{ form.criteres_achat.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Section 5 : Intérêt pour les services -->
+    <div class="section-title">Section 5 : Intérêt pour les services</div>
+    <div class="form-group">
+        <label>Seriez-vous intéressé(e) par :</label>
+        <div class="checkbox-group">{{ form.interet_services }}</div>
+        {% if form.interet_services.errors %}
+            <div class="error">{{ form.interet_services.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label>Combien seriez-vous prêt(e) à payer ?</label>
+        <div class="radio-group">{{ form.montant_pret }}</div>
+        {% if form.montant_pret.errors %}
+            <div class="error">{{ form.montant_pret.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Section 6 : Suggestions -->
+    <div class="section-title">Section 6 : Suggestions</div>
+    <div class="form-group">
+        <label>Quels types de produits ou services souhaiteriez-vous voir développés ?</label>
+        {{ form.suggestions }}
+        {% if form.suggestions.errors %}
+            <div class="error">{{ form.suggestions.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label>Autres commentaires :</label>
+        {{ form.commentaires }}
+        {% if form.commentaires.errors %}
+            <div class="error">{{ form.commentaires.errors }}</div>
+        {% endif %}
+    </div>
+
     <button type="submit">Envoyer</button>
 </form>
+
+</body>
+</html>

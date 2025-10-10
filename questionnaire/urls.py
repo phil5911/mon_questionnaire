@@ -1,15 +1,18 @@
 from django.urls import path
-from .views import generate_pdf_view, home, merci
+from .views import home, merci
+from questionnaire.views import generate_pdf_from_response
 from . import views
 
 urlpatterns = [
-    path('generate-pdf/', generate_pdf_view, name='generate-pdf'),
     path('', home, name='questionnaire'),
+    path('generate-pdf/', views.generate_pdf, name='generate-pdf'),
+    path('pdf/<int:id>/', views.generate_pdf_from_response, name='generate_pdf_from_response'),
     path('questionnaire/', views.questionnaire_view, name='questionnaire'),
     path('remplir/', views.remplir_formulaire, name='remplir_formulaire'),
     path('merci/', merci, name='merci'),
-    path('export-csv/', views.export_reponses_csv, name='export-csv'),
+    path('export-csv/', views.export_reponses_csv, name='export_reponses_csv'),
     path('dashboard/', views.dashboard, name='dashboard'),
-
 ]
+
+
 

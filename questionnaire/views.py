@@ -172,32 +172,46 @@ def home(request):
 
 # Configure le logger
 logger = logging.getLogger(__name__)
+import logging
+from django.shortcuts import render, redirect
+from .forms import QuestionnaireForm
+
+logger = logging.getLogger(__name__)
+
 def remplir_formulaire(request):
-    if request.method == 'POST':
+    """
+    Vue pour afficher et traiter le formulaire de médecine naturelle.
+    Ajout de logs détaillés pour comprendre les erreurs en production.
+    """
+    logger.info("=== Nouvelle requête sur /remplir/ ===")
+
+    if request.method == "POST":
+        logger.info("Méthode POST reçue, tentative de sauvegarde du formulaire.")
         form = QuestionnaireForm(request.POST)
         if form.is_valid():
             try:
-                # Log complet des données pour debug
-                logger.info(f"Données POST reçues: {request.POST}")
-                logger.info(f"Données du formulaire validées : {form.cleaned_data}")
-                logger.info("Formulaire servi à jour")
+                logger.info("Formulaire valide, tentative de sauvegarde en base.")
                 form.save()
+                logger.info("Formulaire enregistré avec succès ✅")
                 return redirect('merci')
             except Exception as e:
-                # Log complet avec traceback
-                logger.exception("Erreur lors de l'enregistrement du formulaire")
-                return HttpResponse(
-                    "Erreur interne du serveur lors de l'enregistrement du formulaire.",
-                    status=500
-                )
+                logger.exception(f"Erreur lors de form.save() : {e}")
+                return render(request, "formulaire.html", {
+                    "form": form,
+                    "error_message": "Une erreur interne est survenue lors de l'enregistrement du formulaire."
+                })
         else:
-            # Log des erreurs de validation
             logger.warning(f"Formulaire invalide : {form.errors}")
+            return render(request, "formulaire.html", {
+                "form": form,
+                "error_message": "Le formulaire contient des erreurs. Merci de vérifier vos réponses."
+            })
     else:
+        logger.info("Méthode GET — affichage du formulaire.")
         form = QuestionnaireForm()
+        logger.info("Formulaire servi à jour ✅")
+        return render(request, "formulaire.html", {"form": form})
 
-    # Retourne le formulaire avec erreurs éventuelles
-    return render(request, 'questionnaire/formulaire.html', {'form': form})
 def questionnaire_view(request):
     if request.method == 'POST':
         form = QuestionnaireForm(request.POST)

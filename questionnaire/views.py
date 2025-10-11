@@ -18,6 +18,7 @@ from questionnaire.models import ReponseQuestionnaire
 
 
 
+
 # --------------------------------------------------------------------
 # ✅ 1. PDF INTERACTIF (vierge à remplir)
 # --------------------------------------------------------------------
@@ -273,6 +274,9 @@ def test_post(request):
     if request.method == "POST":
         return JsonResponse({"message": "POST reçu", "data": request.POST.dict()})
     return JsonResponse({"message": "GET OK"})
+
+def test_post_form(request):
+    return render(request, "questionnaire/test_post.html")
 
 
 

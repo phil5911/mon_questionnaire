@@ -128,21 +128,27 @@ LOGGING = {
         'console': {
             'class': 'logging.StreamHandler',
         },
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'django-error.log',
+        },
     },
     'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG',  # ⬅️ Niveau augmenté à DEBUG
+        'handlers': ['console', 'file'],
+        'level': 'ERROR',
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',  # ⬅️ Niveau augmenté à DEBUG
+            'handlers': ['console', 'file'],
+            'level': 'ERROR',
             'propagate': True,
         },
         'questionnaire': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
+            'handlers': ['console', 'file'],
+            'level': 'ERROR',
             'propagate': False,
         },
     },
 }
+

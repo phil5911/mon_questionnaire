@@ -2,7 +2,7 @@ from django.urls import path
 from .views import home, merci
 from questionnaire.views import generate_pdf_from_response
 from . import views
-from .views import test_post
+from .views import test_post_form
 
 
 urlpatterns = [

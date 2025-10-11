@@ -9,9 +9,11 @@ class ReponseQuestionnaire(models.Model):
         ('Femme', 'Femme'),
         ('Autre', 'Autre'),
     ]
-    sexe = models.CharField(max_length=10, choices=sexe_choices, blank=True)
+
+    sexe = models.CharField(max_length=10, choices=sexe_choices, blank=True, null=True)
     ville = models.CharField(max_length=100, blank=True)
     profession = models.CharField(max_length=100, blank=True)
+
 
     # Section 2 : Connaissance et utilisation
     connait_med_naturelle = models.BooleanField(default=False)

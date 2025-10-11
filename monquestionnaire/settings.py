@@ -131,12 +131,12 @@ LOGGING = {
     },
     'root': {
         'handlers': ['console'],
-        'level': 'INFO',
+        'level': 'DEBUG',  # ⬅️ Niveau augmenté à DEBUG
     },
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': 'INFO',
+            'level': 'DEBUG',  # ⬅️ Niveau augmenté à DEBUG
             'propagate': True,
         },
         'questionnaire': {

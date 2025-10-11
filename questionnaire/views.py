@@ -186,7 +186,7 @@ def remplir_formulaire(request):
     logger.info("=== Nouvelle requête sur /remplir/ ===")
 
     if request.method == "POST":
-        logger.info("Méthode POST reçue, tentative de sauvegarde du formulaire.")
+        logger.info("Méthode POST reçue, données : %s", request.POST.dict())
         form = QuestionnaireForm(request.POST)
         if form.is_valid():
             try:
@@ -211,6 +211,7 @@ def remplir_formulaire(request):
         form = QuestionnaireForm()
         logger.info("Formulaire servi à jour ✅")
         return render(request, "formulaire.html", {"form": form})
+
 
 def questionnaire_view(request):
     if request.method == 'POST':
@@ -263,6 +264,16 @@ def custom_404(request, exception):
 
 def custom_500(request):
     return render(request, 'questionnaire/500.html', status=500)
+
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+
+@csrf_exempt
+def test_post(request):
+    if request.method == "POST":
+        return JsonResponse({"message": "POST reçu", "data": request.POST.dict()})
+    return JsonResponse({"message": "GET OK"})
+
 
 
 

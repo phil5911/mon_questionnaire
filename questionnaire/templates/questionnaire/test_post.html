@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test POST</title>
+</head>
+<body>
+    <h2>Formulaire de test POST</h2>
+    <form method="post" action="{% url 'test_post' %}">
+        {% csrf_token %}
+        <label for="nom">Nom :</label>
+        <input type="text" name="nom" id="nom"><br><br>
+
+        <label for="age">Âge :</label>
+        <input type="number" name="age" id="age"><br><br>
+
+        <button type="submit">Envoyer</button>
+    </form>
+</body>
+</html>

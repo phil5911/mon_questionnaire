@@ -2,6 +2,8 @@ from django.urls import path
 from .views import home, merci
 from questionnaire.views import generate_pdf_from_response
 from . import views
+from .views import test_post
+
 
 urlpatterns = [
     path('', home, name='questionnaire'),
@@ -12,6 +14,7 @@ urlpatterns = [
     path('merci/', merci, name='merci'),
     path('export-csv/', views.export_reponses_csv, name='export_reponses_csv'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path("test-post-form/", test_post_form, name="test_post_form"),
 ]
 
 

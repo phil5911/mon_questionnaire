@@ -16,6 +16,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path("test-post/", test_post, name="test_post"),
     path("test-post-form/", test_post_form, name="test_post_form"),
+    path('liste-reponses/', views.liste_reponses, name='liste_reponses'),
 ]
 
 

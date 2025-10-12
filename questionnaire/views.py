@@ -278,7 +278,9 @@ def test_post(request):
 def test_post_form(request):
     return render(request, "questionnaire/test_post.html")
 
-
+def liste_reponses(request):
+    reponses = ReponseQuestionnaire.objects.all().order_by('-created_at')[:20]  # 20 dernières réponses
+    return render(request, 'questionnaire/liste_reponses.html', {'reponses': reponses})
 
 
 

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Réponses récentes</title>
+</head>
+<body>
+    <h1>Réponses récentes</h1>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <tr>
+            <th>Nom</th>
+            <th>Ville</th>
+            <th>Age</th>
+            <th>Sexe</th>
+            <th>Date</th>
+        </tr>
+        {% for r in reponses %}
+        <tr>
+            <td>{{ r.nom }}</td>
+            <td>{{ r.ville }}</td>
+            <td>{{ r.age }}</td>
+            <td>{{ r.sexe }}</td>
+            <td>{{ r.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

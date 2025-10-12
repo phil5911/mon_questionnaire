@@ -1,1 +1,2 @@
-web: gunicorn monquestionnaire.wsgi
+web: gunicorn monquestionnaire.wsgi --workers 3 --timeout 120
+

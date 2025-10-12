@@ -9,6 +9,7 @@ click==8.3.0
 colorama==0.4.6
 dj-database-url==3.0.1
 Django==5.2.7
+django-extensions
 dnspython==2.8.0
 ecdsa==0.19.1
 email-validator==2.3.0

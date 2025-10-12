@@ -211,7 +211,7 @@ def remplir_formulaire(request):
         logger.info("Méthode GET — affichage du formulaire.")
         form = QuestionnaireForm()
         logger.info("Formulaire servi à jour ✅")
-        return render(request, "formulaire.html", {"form": form})
+        return render(request, "questionnaire/formulaire.html", {"form": form})
 
 
 def questionnaire_view(request):

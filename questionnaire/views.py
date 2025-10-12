@@ -197,13 +197,13 @@ def remplir_formulaire(request):
                 return redirect('merci')
             except Exception as e:
                 logger.exception(f"Erreur lors de form.save() : {e}")
-                return render(request, "formulaire.html", {
+                return render(request, "questionnaire/formulaire.html", {
                     "form": form,
                     "error_message": "Une erreur interne est survenue lors de l'enregistrement du formulaire."
                 })
         else:
             logger.warning(f"Formulaire invalide : {form.errors}")
-            return render(request, "formulaire.html", {
+            return render(request, "questionnaire/formulaire.html", {
                 "form": form,
                 "error_message": "Le formulaire contient des erreurs. Merci de vérifier vos réponses."
             })

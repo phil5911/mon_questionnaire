@@ -74,24 +74,31 @@ TEMPLATES = [
 WSGI_APPLICATION = "monquestionnaire.wsgi.application"
 
 import dj_database_url
+import os
 
 # --- Base de données ---
-if DEBUG:
+if os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("DATABASE_URL"):
+    # ✅ Environnement Railway ou autre hébergeur (prod)
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.getenv("DATABASE_URL"),
+            conn_max_age=600,
+            ssl_require=True  # important pour Railway
+        )
+    }
+else:
+    # ✅ Environnement local (dev)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('LOCAL_DB_NAME'),
-            'USER': os.environ.get('LOCAL_DB_USER'),
-            'PASSWORD': os.environ.get('LOCAL_DB_PASSWORD'),
-            'HOST': os.environ.get('LOCAL_DB_HOST'),
-            'PORT': os.environ.get('LOCAL_DB_PORT'),
+            'NAME': os.getenv('LOCAL_DB_NAME', 'mon_questionnaire'),
+            'USER': os.getenv('LOCAL_DB_USER', 'admin'),
+            'PASSWORD': os.getenv('LOCAL_DB_PASSWORD', '123456'),
+            'HOST': os.getenv('LOCAL_DB_HOST', 'localhost'),
+            'PORT': os.getenv('LOCAL_DB_PORT', '5432'),
         }
     }
-else:
-    # Utilisation de DATABASE_URL fourni par Railway
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-    }
+
 
 # --- Validation des mots de passe ---
 AUTH_PASSWORD_VALIDATORS = [

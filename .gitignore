@@ -1,11 +1,9 @@
-# Python
-*.pyc
 __pycache__/
-
-# Django
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+*.sqlite3
 *.log
-/staticfiles/
-media/
-
-# Environnement
-.env
+*.DS_Store

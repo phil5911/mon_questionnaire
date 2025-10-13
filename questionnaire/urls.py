@@ -8,7 +8,7 @@ from . import views
 urlpatterns = [
     path('', home, name='questionnaire'),
     path('questionnaire/', views.questionnaire_view, name='questionnaire'),
-    path('questionnaire/submit/', views.ma_vue, name='questionnaire_submit'),
+    path('questionnaire/submit/', views.remplir_formulaire, name='questionnaire_submit'),
     path('generate-pdf/', views.generate_pdf, name='generate-pdf'),
     path('pdf/<int:id>/', views.generate_pdf_from_response, name='generate_pdf_from_response'),
     path('remplir/', views.remplir_formulaire, name='remplir_formulaire'),

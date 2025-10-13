@@ -78,7 +78,7 @@ import dj_database_url
 import os
 
 # Récupération des variables d'environnement
-RAILWAY_ENV = os.getenv("RAILWAY_ENVIRONMENT", "production").lower() == "production"
+RAILWAY_ENV = os.getenv("RAILWAY_ENVIRONMENT", "False").lower() == "true"
 
 if RAILWAY_ENV:
     # ☁️ Configuration Railway (production)

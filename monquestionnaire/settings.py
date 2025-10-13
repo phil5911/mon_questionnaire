@@ -80,25 +80,23 @@ import os
 # Récupération des variables d'environnement
 RAILWAY_ENV = os.getenv("RAILWAY_ENVIRONMENT", "False").lower() == "true"
 
-if RAILWAY_ENV:
-    # ☁️ Configuration Railway (production)
+# Toujours utiliser DATABASE_URL si présente
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
     DATABASES = {
-        'default': dj_database_url.config(
-            default=os.getenv("DATABASE_URL"),
-            conn_max_age=600,
-            ssl_require=True
-        )
+        'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=True)
     }
 else:
-    # 💻 Configuration locale (développement)
+    # Configuration locale si DATABASE_URL absente
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': os.getenv("LOCAL_DB_NAME"),
             'USER': os.getenv("LOCAL_DB_USER"),
             'PASSWORD': os.getenv("LOCAL_DB_PASSWORD"),
-            'HOST': os.getenv("LOCAL_DB_HOST"),
-            'PORT': os.getenv("LOCAL_DB_PORT"),
+            'HOST': os.getenv("LOCAL_DB_HOST", "127.0.0.1"),
+            'PORT': os.getenv("LOCAL_DB_PORT", "5432"),
         }
     }
 
@@ -163,4 +161,13 @@ LOGGING = {
         },
     },
 }
+
+
+
+
+
+
+
+
+
 

@@ -182,14 +182,16 @@ logger = logging.getLogger(__name__)
 def remplir_formulaire(request):
     """
     Vue pour afficher et traiter le formulaire de médecine naturelle.
-    Ajout de logs détaillés pour comprendre les erreurs en production.
+    Logs détaillés pour comprendre les erreurs en production et les champs invalides.
     """
     logger.info("=== Nouvelle requête sur /remplir/ ===")
 
     if request.method == "POST":
         logger.info("Méthode POST reçue, données : %s", request.POST.dict())
         form = QuestionnaireForm(request.POST)
+
         if form.is_valid():
+            print("Formulaire valide ✅")
             try:
                 logger.info("Formulaire valide, tentative de sauvegarde en base.")
                 form.save()
@@ -202,7 +204,15 @@ def remplir_formulaire(request):
                     "error_message": "Une erreur interne est survenue lors de l'enregistrement du formulaire."
                 })
         else:
-            logger.warning(f"Formulaire invalide : {form.errors}")
+            # Formulaire invalide : on log chaque champ et son erreur
+            logger.warning("Formulaire invalide ! Détails des erreurs :")
+            for field, errors in form.errors.items():
+                logger.warning("Champ '%s' : %s", field, errors)
+            # Affichage aussi dans les logs print
+            print("Formulaire invalide, erreurs par champ :")
+            for field, errors in form.errors.items():
+                print(f"{field}: {errors}")
+
             return render(request, "questionnaire/formulaire.html", {
                 "form": form,
                 "error_message": "Le formulaire contient des erreurs. Merci de vérifier vos réponses."
@@ -212,7 +222,6 @@ def remplir_formulaire(request):
         form = QuestionnaireForm()
         logger.info("Formulaire servi à jour ✅")
         return render(request, "questionnaire/formulaire.html", {"form": form})
-
 
 def questionnaire_view(request):
     if request.method == 'POST':

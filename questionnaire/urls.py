@@ -7,9 +7,10 @@ from . import views
 
 urlpatterns = [
     path('', home, name='questionnaire'),
+    path('questionnaire/', views.questionnaire_view, name='questionnaire'),
+    path('questionnaire/submit/', views.ma_vue, name='questionnaire_submit'),
     path('generate-pdf/', views.generate_pdf, name='generate-pdf'),
     path('pdf/<int:id>/', views.generate_pdf_from_response, name='generate_pdf_from_response'),
-    path('questionnaire/', views.questionnaire_view, name='questionnaire'),
     path('remplir/', views.remplir_formulaire, name='remplir_formulaire'),
     path('merci/', merci, name='merci'),
     path('export-csv/', views.export_reponses_csv, name='export_reponses_csv'),

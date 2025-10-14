@@ -28,7 +28,11 @@ urlpatterns = [
 
     # Liste des réponses
     path('liste-reponses/', views.liste_reponses, name='liste_reponses'),
+
+    # Tester la connection db
+    path('test-db/', views.test_db_connection, name='test_db_connection'),
 ]
+    
 
 
 

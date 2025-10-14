@@ -291,6 +291,17 @@ def liste_reponses(request):
     reponses = ReponseQuestionnaire.objects.all().order_by('-created_at')[:20]  # 20 dernières réponses
     return render(request, 'questionnaire/liste_reponses.html', {'reponses': reponses})
 
+from django.db import connection
+from django.http import HttpResponse
+
+def test_db_connection(request):
+    try:
+        connection.ensure_connection()
+        return HttpResponse("✅ Connexion à la base réussie")
+    except Exception as e:
+        return HttpResponse(f"❌ Erreur de connexion : {e}")
+
+
 
 
 

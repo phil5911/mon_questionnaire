@@ -85,6 +85,7 @@ RAILWAY_ENV = os.getenv("RAILWAY_ENVIRONMENT", "False").lower() == "true"
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL:
+    DATABASE_URL = DATABASE_URL.strip()  # enlève espaces et retours chariot
     DATABASES = {
         'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=True)
     }

@@ -87,7 +87,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 if DATABASE_URL:
     DATABASE_URL = DATABASE_URL.strip()  # enlève espaces et retours chariot
     DATABASES = {
-        'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=True)
+        'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=False)
     }
 else:
     # Configuration locale si DATABASE_URL absente

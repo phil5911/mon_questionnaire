@@ -84,25 +84,56 @@ RAILWAY_ENV = os.getenv("RAILWAY_ENVIRONMENT", "False").lower() == "true"
 # Toujours utiliser DATABASE_URL si présente
 DATABASE_URL = os.getenv("DATABASE_URL")
 
+if not DATABASE_URL and RAILWAY_ENVIRONMENT:
+    # Recomposer l'URL depuis les variables Railway si DATABASE_URL absente
+    PROD_DB_USER = os.getenv("PROD_DB_USER")
+    PROD_DB_PASSWORD = os.getenv("PROD_DB_PASSWORD")
+    PROD_DB_HOST = os.getenv("PROD_DB_HOST")
+    PROD_DB_PORT = os.getenv("PROD_DB_PORT")
+    PROD_DB_NAME = os.getenv("PROD_DB_NAME")
+
+    if all([PROD_DB_USER, PROD_DB_PASSWORD, PROD_DB_HOST, PROD_DB_PORT, PROD_DB_NAME]):
+        DATABASE_URL = f"postgresql://{PROD_DB_USER}:{PROD_DB_PASSWORD}@{PROD_DB_HOST}:{PROD_DB_PORT}/{PROD_DB_NAME}"
+    else:
+        raise Exception("Variables PROD_DB_* manquantes dans le .env")
+
+# --------------------------------------------------
+# Configuration Django DATABASES
+# --------------------------------------------------
 if DATABASE_URL:
-    DATABASE_URL = DATABASE_URL.strip()  # enlève espaces et retours chariot
+    # Analyse l'URL pour désactiver SSL si tunnel local
+    from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
+
+    parsed = urlparse(DATABASE_URL)
+    query = parse_qs(parsed.query)
+
+    # Si host local (tunnel), on désactive SSL
+    if parsed.hostname in ["127.0.0.1", "localhost"]:
+        query["sslmode"] = ["disable"]
+    else:
+        query["sslmode"] = ["require"]
+
+    new_query = urlencode(query, doseq=True)
+    DATABASE_URL_MOD = urlunparse(
+        (parsed.scheme, parsed.netloc, parsed.path, parsed.params, new_query, parsed.fragment)
+    )
+
     DATABASES = {
-        'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=False)
+        "default": dj_database_url.parse(DATABASE_URL_MOD, conn_max_age=600)
     }
 else:
-    # Configuration locale si DATABASE_URL absente
+    # Configuration locale si pas de DATABASE_URL
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv("LOCAL_DB_NAME"),
-            'USER': os.getenv("LOCAL_DB_USER"),
-            'PASSWORD': os.getenv("LOCAL_DB_PASSWORD"),
-            'HOST': os.getenv("LOCAL_DB_HOST", "127.0.0.1"),
-            'PORT': os.getenv("LOCAL_DB_PORT", "5432"),
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("LOCAL_DB_NAME"),
+            "USER": os.getenv("LOCAL_DB_USER"),
+            "PASSWORD": os.getenv("LOCAL_DB_PASSWORD"),
+            "HOST": os.getenv("LOCAL_DB_HOST", "127.0.0.1"),
+            "PORT": os.getenv("LOCAL_DB_PORT", "5432"),
         }
     }
-
-# --- Validation des mots de passe ---
+        # --- Validation des mots de passe ---
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},

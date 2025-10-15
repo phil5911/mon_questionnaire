@@ -23,13 +23,22 @@ load_dotenv(dotenv_path=BASE_DIR / '.env')
 # --- Clé secrète et mode DEBUG ---
 SECRET_KEY = os.environ.get('SECRET_KEY', 'changeme')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-DEBUG = True
+
 
 # --- ALLOWED_HOSTS ---
 if DEBUG:
     ALLOWED_HOSTS = ['*']
 else:
-    ALLOWED_HOSTS = ['monquestionnaire-production.up.railway.app']
+    ALLOWED_HOSTS = [
+        'monquestionnaire-production.up.railway.app',
+        '127.0.0.1',
+        'localhost'
+    ]
+
+    CSRF_TRUSTED_ORIGINS = [
+        'https://monquestionnaire-production.up.railway.app',
+        'http://127.0.0.1:8000',
+    ]
 
 # --- Applications installées ---
 INSTALLED_APPS = [

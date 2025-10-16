@@ -129,19 +129,31 @@ def generate_pdf(request):
 # --------------------------------------------------------------------
 # ✅ 2. PDF AVEC LES RÉPONSES D'UN UTILISATEUR
 # --------------------------------------------------------------------
+import io
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import cm
+from .models import ReponseQuestionnaire
+
 def generate_pdf_from_response(request, id):
+    # On récupère la réponse
     reponse = get_object_or_404(ReponseQuestionnaire, id=id)
 
+    # Création du buffer PDF
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=A4)
     width, height = A4
     margin = 2 * cm
     y = height - margin
 
+    # Titre
     c.setFont("Helvetica-Bold", 14)
     c.drawString(margin, y, "Réponses au Questionnaire - Médecine Naturelle")
     y -= 1.5 * cm
 
+    # Contenu
     c.setFont("Helvetica", 12)
     for field in reponse._meta.get_fields():
         if field.many_to_many or field.one_to_many:
@@ -155,13 +167,14 @@ def generate_pdf_from_response(request, id):
             y = height - margin
             c.setFont("Helvetica", 12)
 
-    c.showPage()
     c.save()
-
     buffer.seek(0)
+
+    # Réponse HTTP
     response = HttpResponse(buffer, content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="reponse_{id}.pdf"'
     return response
+
 
 
 # --------------------------------------------------------------------
@@ -196,7 +209,7 @@ def remplir_formulaire(request):
                 logger.info("Formulaire valide, tentative de sauvegarde en base.")
                 form.save()
                 logger.info("Formulaire enregistré avec succès ✅")
-                return redirect('merci')
+                return redirect('/merci/')
             except Exception as e:
                 logger.exception(f"Erreur lors de form.save() : {e}")
                 return render(request, "questionnaire/formulaire.html", {

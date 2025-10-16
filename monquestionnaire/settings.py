@@ -93,7 +93,7 @@ RAILWAY_ENV = os.getenv("RAILWAY_ENVIRONMENT", "False").lower() == "true"
 # Toujours utiliser DATABASE_URL si présente
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-if not DATABASE_URL and RAILWAY_ENVIRONMENT:
+if not DATABASE_URL and RAILWAY_ENV:
     # Recomposer l'URL depuis les variables Railway si DATABASE_URL absente
     PROD_DB_USER = os.getenv("PROD_DB_USER")
     PROD_DB_PASSWORD = os.getenv("PROD_DB_PASSWORD")

@@ -12,6 +12,7 @@
             <th>Age</th>
             <th>Sexe</th>
             <th>Date</th>
+            <th>PDF</th> <!-- Nouvelle colonne -->
         </tr>
         {% for r in reponses %}
         <tr>
@@ -20,6 +21,11 @@
             <td>{{ r.age }}</td>
             <td>{{ r.sexe }}</td>
             <td>{{ r.created_at }}</td>
+            <td>
+                <a href="{% url 'generate_pdf_from_response' r.id %}" target="_blank">
+                    Télécharger PDF
+                </a>
+            </td>
         </tr>
         {% endfor %}
     </table>

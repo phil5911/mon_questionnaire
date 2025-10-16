@@ -8,7 +8,6 @@ urlpatterns = [
 
     # Formulaire principal
     path('questionnaire/', views.questionnaire_view, name='questionnaire_view'),
-    # path('questionnaire/submit/', views.remplir_formulaire, name='questionnaire_submit'),
     path('remplir/', views.remplir_formulaire, name='remplir_formulaire'),
 
     # Page de remerciement après soumission
@@ -32,7 +31,8 @@ urlpatterns = [
     # Tester la connection db
     path('test-db/', views.test_db_connection, name='test_db_connection'),
 ]
-    
+
+
 
 
 

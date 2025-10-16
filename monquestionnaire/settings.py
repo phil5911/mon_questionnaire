@@ -93,7 +93,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # --- Détection du contexte ---
-IS_RAILWAY = os.getenv("RAILWAY_ENVIRONMENT") is not None
+IS_RAILWAY = os.getenv("RAILWAY_ENVIRONMENT", "FALSE") == "TRUE"
 
 # --- Récupération de l'URL ---
 DATABASE_URL = os.getenv("DATABASE_URL")

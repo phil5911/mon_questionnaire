@@ -84,34 +84,53 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "monquestionnaire.wsgi.application"
 
-import dj_database_url
 import os
 from urllib.parse import urlparse, urlunparse, parse_qs, urlencode
-
-# Charger .env si nécessaire (local)
+import dj_database_url
 from dotenv import load_dotenv
+
+# Charger le fichier .env en local
 load_dotenv()
 
+# --- Détection du contexte ---
+IS_RAILWAY = os.getenv("RAILWAY_ENVIRONMENT") is not None
+
+# --- Récupération de l'URL ---
 DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
     raise Exception("DATABASE_URL manquante !")
 
-# Ajouter sslmode pour production
 parsed = urlparse(DATABASE_URL)
 query = parse_qs(parsed.query)
-if parsed.hostname in ["127.0.0.1", "localhost"]:
-    query["sslmode"] = ["disable"]
-else:
-    query["sslmode"] = ["require"]
 
+# --- Ajustement automatique de l'URL selon l'environnement ---
+if IS_RAILWAY:
+    # Si l’app tourne sur Railway : forcer l’URL interne
+    # Exemple : postgresql://user:pass@postgres.railway.internal:5432/dbname
+    internal_host = "postgres.railway.internal"
+    netloc_parts = parsed.netloc.split('@')
+    if len(netloc_parts) == 2:  # user:password@host
+        userpass, _ = netloc_parts
+        new_netloc = f"{userpass}@{internal_host}:5432"
+    else:
+        new_netloc = f"{internal_host}:5432"
+    query["sslmode"] = ["require"]
+else:
+    # En local, pas de SSL
+    new_netloc = parsed.netloc
+    query["sslmode"] = ["disable"]
+
+# --- Reconstruire l’URL complète ---
 new_query = urlencode(query, doseq=True)
 DATABASE_URL_MOD = urlunparse(
-    (parsed.scheme, parsed.netloc, parsed.path, parsed.params, new_query, parsed.fragment)
+    (parsed.scheme, new_netloc, parsed.path, parsed.params, new_query, parsed.fragment)
 )
 
+# --- Configuration finale ---
 DATABASES = {
     "default": dj_database_url.parse(DATABASE_URL_MOD, conn_max_age=600)
 }
+
 
         # --- Validation des mots de passe ---
 AUTH_PASSWORD_VALIDATORS = [

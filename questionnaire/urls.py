@@ -7,7 +7,7 @@ urlpatterns = [
     path('', views.home, name='questionnaire'),
 
     # Formulaire principal
-    path('questionnaire/', views.questionnaire_view, name='questionnaire_view'),
+    path('questionnaire/', views.remplir_formulaire, name='questionnaire_view'),
     path('remplir/', views.remplir_formulaire, name='remplir_formulaire'),
 
     # Page de remerciement après soumission

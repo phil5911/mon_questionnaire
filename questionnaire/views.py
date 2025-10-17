@@ -109,8 +109,8 @@ def dashboard(request):
 # ✅ 5. LISTE DES RÉPONSES
 # --------------------------------------------------------------------
 def liste_reponses(request):
-    """Affiche les 20 dernières réponses"""
-    reponses = ReponseQuestionnaire.objects.all().order_by('-created_at')[:20]
+    """Affiche toutes les réponses"""
+    reponses = ReponseQuestionnaire.objects.all().order_by('-created_at')
     return render(request, 'questionnaire/liste_reponses.html', {'reponses': reponses})
 
 

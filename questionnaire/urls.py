@@ -15,7 +15,6 @@ urlpatterns = [
 
     # PDF et export CSV
     path('generate-pdf/', views.generate_pdf, name='generate-pdf'),
-    path('pdf/<int:id>/', generate_pdf_from_response, name='generate_pdf_from_response'),
     path('export-csv/', views.export_reponses_csv, name='export_reponses_csv'),
 
     # Dashboard
@@ -31,6 +30,7 @@ urlpatterns = [
     # Tester la connection db
     path('test-db/', views.test_db_connection, name='test_db_connection'),
 ]
+
 
 
 

@@ -198,6 +198,34 @@ def generate_pdf(request):
     c.save()
     return response
 
+def generate_pdf_from_response(request, id):
+    """Génère un PDF contenant les réponses d'une personne spécifique."""
+    reponse = get_object_or_404(ReponseQuestionnaire, id=id)
+
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="reponse_{id}.pdf"'
+
+    c = canvas.Canvas(response, pagesize=A4)
+    y = 27 * cm
+
+    c.setFont("Helvetica-Bold", 16)
+    c.drawString(2 * cm, y, "Réponse au Questionnaire")
+    y -= 1 * cm
+
+    c.setFont("Helvetica", 12)
+    for field in ReponseQuestionnaire._meta.fields:
+        name = field.verbose_name
+        value = getattr(reponse, field.name)
+        c.drawString(2 * cm, y, f"{name}: {value}")
+        y -= 0.6 * cm
+        if y < 3 * cm:
+            c.showPage()
+            y = 27 * cm
+
+    c.save()
+    return response
+
+
 
 # --------------------------------------------------------------------
 # ✅ 7. TESTS ET OUTILS TECHNIQUES

@@ -15,6 +15,8 @@ urlpatterns = [
 
     # PDF et export CSV
     path('generate-pdf/', views.generate_pdf, name='generate-pdf'),
+    path('generate-pdf/<int:id>/', views.generate_pdf_from_response, name='generate_pdf_from_response'),
+
     path('export-csv/', views.export_reponses_csv, name='export_reponses_csv'),
 
     # Dashboard

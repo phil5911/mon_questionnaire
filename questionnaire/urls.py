@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from questionnaire.views import generate_pdf_from_response
+
 
 urlpatterns = [
     # Page d'accueil du questionnaire
